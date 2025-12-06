@@ -44,8 +44,8 @@ const EditEvent = () => {
         );
         setEvent(res.data);
 
-        // Set preview images
-        setPreviewImage(res.data.imageUrl);
+        // Set preview images (Cloudinary URLs)
+        setPreviewImage(res.data.imageUrl || "");
         setPreviewSponsors(res.data.sponsorLogos || []);
       } catch (err) {
         console.error(err);
@@ -123,7 +123,6 @@ const EditEvent = () => {
         {/* Sidebar */}
         <nav className="col-md-2 d-none d-md-block bg-dark sidebar p-3 min-vh-100 text-white">
           <h4 className="text-center mb-4">Admin Panel</h4>
-
           <ul className="nav flex-column">
             <li className="nav-item mb-2">
               <button
@@ -133,7 +132,6 @@ const EditEvent = () => {
                 Dashboard
               </button>
             </li>
-
             <li className="nav-item mb-2">
               <button
                 className="btn btn-dark w-100"
@@ -142,7 +140,6 @@ const EditEvent = () => {
                 Create Event
               </button>
             </li>
-
             <li className="nav-item mb-2">
               <button
                 className="btn btn-dark w-100"
@@ -151,7 +148,6 @@ const EditEvent = () => {
                 Event List
               </button>
             </li>
-
             <li className="nav-item mt-4">
               <button
                 className="btn btn-danger w-100"
@@ -169,7 +165,6 @@ const EditEvent = () => {
         {/* Main Content */}
         <main className="col-md-10 ms-sm-auto px-4 py-4">
           <h2>Edit Event</h2>
-
           {message && <div className="alert alert-info mt-2">{message}</div>}
 
           <form onSubmit={handleSubmit} className="mt-4">
@@ -309,11 +304,7 @@ const EditEvent = () => {
             {previewImage && (
               <div className="mb-3">
                 <img
-                  src={
-                    previewImage.startsWith("blob")
-                      ? previewImage
-                      : `${import.meta.env.VITE_API_URL}${previewImage}`
-                  }
+                  src={previewImage}
                   alt="Event"
                   style={{
                     width: "180px",
@@ -341,11 +332,7 @@ const EditEvent = () => {
               {previewSponsors.map((src, i) => (
                 <img
                   key={i}
-                  src={
-                    src.startsWith("blob")
-                      ? src
-                      : `${import.meta.env.VITE_API_URL}${src}`
-                  }
+                  src={src}
                   alt="Sponsor"
                   style={{
                     height: "80px",

@@ -43,9 +43,18 @@ const BookingDetails = () => {
 
       setBooking(res.data);
       setStatus(res.data.status);
-      // booking.eventId may be an id or populated object; we handle both
-      const evtId = res.data?.eventId?._id || res.data?.eventId;
-      if (evtId) fetchEvent(evtId);
+
+      // Handle event data (populated or just ID)
+      const evtData = res.data?.eventId;
+      if (!evtData) {
+        setEvent(null);
+      } else if (typeof evtData === "object" && evtData._id) {
+        // evtData is populated
+        setEvent(evtData);
+      } else {
+        // evtData is just an ID
+        fetchEvent(evtData);
+      }
 
       setEmailData({
         subject: "Your Event Ticket ✔",
@@ -59,7 +68,7 @@ Below is your E-Ticket card. This is your entry pass.`,
     }
   };
 
-  // Fetch event
+  // Fetch Event by ID
   const fetchEvent = async (eventId) => {
     try {
       const res = await axios.get(`${API}/api/events/${eventId}`);
@@ -108,97 +117,84 @@ Below is your E-Ticket card. This is your entry pass.`,
     }
   };
 
-  // Build email-safe HTML (B2). Inline CSS, minimal, email-friendly.
-  // Build email-safe HTML with QR Code image included
+  // Build Email HTML
   const buildEmailTicketHTML = () => {
     const evTitle = event?.title || "";
     const evDate = event?.date || "";
-    const evTime = event?.eventTime || event?.time || "";
-    const evLocation = event?.address || event?.location || "";
+    const evTime = event?.eventTime || "";
+    const evLocation = event?.address || "";
 
-    // QR Code image (email supported)
     const qrImageURL = `https://quickchart.io/qr?size=200&text=${encodeURIComponent(
       `${API}/api/booking/verify/${booking.ticketNumber}`
     )}`;
 
-    const html = `
-    <div style="font-family: Arial, Helvetica, sans-serif; background:#f6f6f6; padding:20px;">
+    return `
+      <div style="font-family: Arial, Helvetica, sans-serif; background:#f6f6f6; padding:20px;">
         <h3>Dear ${booking.firstName} ${booking.lastName},</h3>
-    <p>Your event ticket has been confirmed. Below is your E-Ticket card. This is your  pass entry.</p>  
+        <p>Your event ticket has been confirmed. Below is your E-Ticket card. This is your entry pass.</p>  
 
-    <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:8px; overflow:hidden;">
-              
-              <!-- HEADER -->
-              <tr>
-                <td style="background:#222831; color:#ffffff; padding:24px; text-align:center;">
-                  <h2 style="margin:0; font-size:22px;">🎟️ ${evTitle}</h2>
-                  <p style="margin:4px 0 0; opacity:0.8;">Entry Pass</p>
-                </td>
-              </tr>
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td align="center">
+              <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:8px; overflow:hidden;">
+                <tr>
+                  <td style="background:#222831; color:#ffffff; padding:24px; text-align:center;">
+                    <h2 style="margin:0; font-size:22px;">🎟️ ${evTitle}</h2>
+                    <p style="margin:4px 0 0; opacity:0.8;">Entry Pass</p>
+                  </td>
+                </tr>
 
-              <!-- CONTENT -->
-              <tr>
-                <td style="padding:20px;">
-                  
-                  <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e9e9e9; border-radius:6px;">
-                    <tr>
-                      <td style="padding:16px; width:65%; vertical-align:top;">
-                        <p><strong>Ticket No:</strong> ${
-                          booking.ticketNumber
-                        }</p>
-                        <p><strong>Name:</strong> ${booking.firstName} ${
+                <tr>
+                  <td style="padding:20px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e9e9e9; border-radius:6px;">
+                      <tr>
+                        <td style="padding:16px; width:65%; vertical-align:top;">
+                          <p><strong>Ticket No:</strong> ${
+                            booking.ticketNumber
+                          }</p>
+                          <p><strong>Name:</strong> ${booking.firstName} ${
       booking.lastName
     }</p>
-                        <p><strong>Category:</strong> ${booking.ticketType}</p>
-                        <p><strong>City:</strong> ${booking.cityName || ""}</p>
-                        <p><strong>Date:</strong> ${evDate}</p>
-                        <p><strong>Time:</strong> ${evTime}</p>
-                        <p><strong>Location:</strong> ${evLocation}</p>
-                      </td>
+                          <p><strong>Category:</strong> ${
+                            booking.ticketType
+                          }</p>
+                          <p><strong>City:</strong> ${
+                            booking.cityName || ""
+                          }</p>
+                          <p><strong>Date:</strong> ${evDate}</p>
+                          <p><strong>Time:</strong> ${evTime}</p>
+                          <p><strong>Location:</strong> ${evLocation}</p>
+                        </td>
+                        <td style="padding:16px; width:35%; text-align:center; vertical-align:middle;">
+                          <p style="margin-bottom:8px; font-size:12px; color:#666;">Scan QR to verify</p>
+                          <img src="${qrImageURL}" alt="QR Code" style="width:140px; height:140px;" />
+                        </td>
+                      </tr>
+                    </table>
+                    <p style="margin-top:16px; color:#666;">
+                      Please show this ticket at the entry gate. This ticket is valid for one person only.
+                    </p>
+                  </td>
+                </tr>
 
-                      <!-- QR CODE -->
-                      <td style="padding:16px; width:35%; text-align:center; vertical-align:middle;">
-                        <p style="margin-bottom:8px; font-size:12px; color:#666;">Scan QR to verify</p>
-                        <img 
-                          src="${qrImageURL}" 
-                          alt="QR Code"
-                          style="width:140px; height:140px;"
-                        />
-                      </td>
-                    </tr>
-                  </table>
-
-                  <p style="margin-top:16px; color:#666;">
-                    Please show this ticket at the entry gate. This ticket is valid for one person only.
-                  </p>
-                </td>
-              </tr>
-
-              <!-- FOOTER -->
-              <tr>
-                <td style="text-align:center; background:#f7f7f7; padding:14px; color:#777;">
-                  <small>Thank you for your purchase</small>
-                </td>
-              </tr>
-
-            </table>
-          </td>
-        </tr>
-      </table>
-    </div>
-  `;
-    return html;
+                <tr>
+                  <td style="text-align:center; background:#f7f7f7; padding:14px; color:#777;">
+                    <small>Thank you for your purchase</small>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+    `;
   };
 
-  // =============================== SEND EMAIL WITH TICKET HTML ==============================
+  // Send Email
   const sendEmail = async () => {
     if (!booking) return alert("Booking not loaded.");
     try {
-      setSending(true); // ⛔ disable button
-      // build email HTML
+      setSending(true);
       const ticketHTML = buildEmailTicketHTML();
 
       await axios.post(
@@ -206,7 +202,7 @@ Below is your E-Ticket card. This is your entry pass.`,
         {
           subject: emailData.subject || "Your Event Ticket",
           message: emailData.message || "",
-          htmlContent: ticketHTML, // send email-safe HTML to server (server may use it)
+          htmlContent: ticketHTML,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -217,7 +213,7 @@ Below is your E-Ticket card. This is your entry pass.`,
       console.error("Send Email Error:", error);
       alert("Failed to send email!");
     } finally {
-      setSending(false); // ✅ enable button again
+      setSending(false);
     }
   };
 
@@ -232,21 +228,16 @@ Below is your E-Ticket card. This is your entry pass.`,
   return (
     <div className="container mt-4">
       <h2 className="mb-3 text-center">Booking Details</h2>
-
       {message && <div className="alert alert-info">{message}</div>}
 
-      {/* ================= CUSTOMER + EVENT INFO ================= */}
       <div className="row">
-        {/* LEFT: Customer */}
         <div className="col-md-8 shadow-sm p-5">
           <div className="d-flex justify-content-between">
             <div className="col-md-7">
               <p className="mb-2">Customer Information</p>
-
               <h4 className="text-primary">
                 <b>Ticket #</b> {booking.ticketNumber}
               </h4>
-
               <p>
                 <b>Name:</b> {booking.firstName} {booking.lastName}
               </p>
@@ -283,12 +274,12 @@ Below is your E-Ticket card. This is your entry pass.`,
               </div>
             </div>
 
-            {/* RECEIPT */}
+            {/* Receipt */}
             <div className="col-md-5">
               <h4>Receipt</h4>
               {booking.receiptImage ? (
                 <img
-                  src={`${API}${booking.receiptImage}`}
+                  src={booking.receiptImage}
                   alt="Receipt"
                   className="img-fluid rounded mt-2"
                 />
@@ -298,8 +289,8 @@ Below is your E-Ticket card. This is your entry pass.`,
             </div>
           </div>
 
-          {/* ================= TICKET UI ================= */}
-          <div className=" my-5 text-center">
+          {/* Ticket Preview */}
+          <div className="my-5 text-center">
             <div
               ref={ticketRef}
               className="ticket border rounded shadow-lg overflow-hidden bg-white"
@@ -309,7 +300,6 @@ Below is your E-Ticket card. This is your entry pass.`,
                 <p className="mb-0" style={{ opacity: 0.8 }}>
                   Entry Pass
                 </p>
-
                 <span
                   className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1"
                   style={{ borderBottomRightRadius: "12px" }}
@@ -322,7 +312,6 @@ Below is your E-Ticket card. This is your entry pass.`,
                 <div className="row text-start">
                   <div className="col-md-8">
                     <h3 className="fw-bold mb-2"># {booking?.ticketNumber}</h3>
-
                     <p>
                       <b>Name:</b> {booking.firstName} {booking.lastName}
                     </p>
@@ -335,9 +324,7 @@ Below is your E-Ticket card. This is your entry pass.`,
                     <p>
                       <b>Location:</b> {event?.address}
                     </p>
-
                     <hr />
-
                     <p>
                       <b>Ticket No:</b> {booking.ticketNumber}
                     </p>
@@ -349,7 +336,6 @@ Below is your E-Ticket card. This is your entry pass.`,
                   <div className="col-md-4 text-center">
                     <div className="border rounded p-3">
                       <p className="small text-muted mb-2">Scan to verify</p>
-
                       <QRCode
                         value={`${API}/api/booking/verify/${booking.ticketNumber}`}
                         size={120}
@@ -370,10 +356,9 @@ Below is your E-Ticket card. This is your entry pass.`,
           </div>
         </div>
 
-        {/* EVENT INFO */}
-        <div className="col-md-4 p-5 " style={{ background: "#efefefff" }}>
+        {/* Event Info */}
+        <div className="col-md-4 p-5" style={{ background: "#efefefff" }}>
           <h4 className="mb-3">Event Information</h4>
-
           {!event ? (
             <p className="text-danger">Event details not found.</p>
           ) : (
@@ -404,7 +389,7 @@ Below is your E-Ticket card. This is your entry pass.`,
         </div>
       </div>
 
-      {/* ================= EMAIL MODAL ================= */}
+      {/* Email Modal */}
       {showEmailModal && (
         <div
           className="modal d-block"
@@ -428,9 +413,6 @@ Below is your E-Ticket card. This is your entry pass.`,
                   disabled
                   className="form-control mb-3"
                   value={emailData.subject}
-                  onChange={(e) =>
-                    setEmailData({ ...emailData, subject: e.target.value })
-                  }
                 />
 
                 <label className="form-label">Message</label>
@@ -439,14 +421,9 @@ Below is your E-Ticket card. This is your entry pass.`,
                   disabled
                   rows="4"
                   value={emailData.message}
-                  onChange={(e) =>
-                    setEmailData({ ...emailData, message: e.target.value })
-                  }
-                ></textarea>
+                />
 
-                {/* NOTE: email-ticket-template visible preview (not raw HTML used in email) */}
                 <h5 className="mb-3">Ticket Preview (Email Version)</h5>
-
                 <div
                   id="email-ticket-template"
                   className="border rounded shadow-sm p-3 bg-white"
@@ -454,7 +431,6 @@ Below is your E-Ticket card. This is your entry pass.`,
                   <div className="bg-dark text-white text-center p-3 position-relative">
                     <h4 className="mb-1">{event?.title}</h4>
                     <p style={{ opacity: 0.7 }}>Entry Pass</p>
-
                     <span
                       className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1"
                       style={{ borderBottomRightRadius: "12px" }}
@@ -462,7 +438,6 @@ Below is your E-Ticket card. This is your entry pass.`,
                       {booking.ticketType}
                     </span>
                   </div>
-
                   <div className="p-3 bg-white row justify-content-between">
                     <div className="col-md-8">
                       <h5>
@@ -480,32 +455,23 @@ Below is your E-Ticket card. This is your entry pass.`,
                       <p>
                         <b>Location:</b> {event?.address}
                       </p>
-
                       <hr />
-
                       <p>
                         <b>Category:</b> {booking.ticketType}
                       </p>
                     </div>
-
-                    <div className="col-md-4">
-                      <div className="text-center">
-                        <div className="border rounded p-3">
-                          <p className="small text-muted mb-2">
-                            Scan to verify
-                          </p>
-
-                          <QRCode
-                            value={`${API}/api/booking/verify/${booking.ticketNumber}`}
-                            size={120}
-                            level="H"
-                            includeMargin={true}
-                          />
-                        </div>
+                    <div className="col-md-4 text-center">
+                      <div className="border rounded p-3">
+                        <p className="small text-muted mb-2">Scan to verify</p>
+                        <QRCode
+                          value={`${API}/api/booking/verify/${booking.ticketNumber}`}
+                          size={120}
+                          level="H"
+                          includeMargin={true}
+                        />
                       </div>
                     </div>
                   </div>
-
                   <div className="bg-light text-center p-2 border-top">
                     <small className="text-muted">
                       Thank you for your purchase
@@ -521,7 +487,6 @@ Below is your E-Ticket card. This is your entry pass.`,
                 >
                   Close
                 </button>
-
                 <button
                   className="btn btn-success"
                   onClick={sendEmail}

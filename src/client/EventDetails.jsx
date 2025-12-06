@@ -48,48 +48,60 @@ const EventDetails = () => {
       </div>
     );
 
-  const mainImage = event.imageUrl ? `${API}${event.imageUrl}` : null;
+  // ✅ Use Cloudinary URLs directly
+  const mainImage =
+    event.imageUrl || "https://via.placeholder.com/600x400?text=No+Image";
 
   return (
     <>
       <Header />
       <div className="container my-5">
         <div className="row">
+          {/* Event Info */}
           <div className="col-md-8">
             <h2 className="fw-bold mb-3">{event.title}</h2>
             <h5>{event.category}</h5>
             <p>{event.address}</p>
             <p>{event.location}</p>
             <p>{event.date}</p>
-            <p>{event.time}</p>
+            <p>{event.time || event.eventTime}</p>
             <p>
-              Standard: {event.standardPrice}, VIP: {event.vipPrice}
+              Standard: ${event.standardPrice}, VIP: ${event.vipPrice}
             </p>
             <p>{event.refreshments}</p>
-            <h5>Description: </h5>
+            <h5>Description:</h5>
             <p>{event.description}</p>
           </div>
+
+          {/* Event Sidebar */}
           <div className="col-md-4">
-            <img src={mainImage} className="img-fluid rounded shadow mb-4" />
+            <img
+              src={mainImage}
+              className="img-fluid rounded shadow mb-4"
+              alt={event.title}
+            />
             <Link to={`/booking-form/${event._id}`}>
-              <button className="btn btn-danger">Book Ticket</button>
+              <button className="btn btn-danger w-100 mb-2">Book Ticket</button>
             </Link>
-            <button className="btn btn-success ms-2">
-              Contact at WhatsApp
+            <button className="btn btn-success w-100 mb-4">
+              Contact via WhatsApp
             </button>
-            {/* ⭐ SPONSOR LOGOS */}
+
+            {/* ⭐ Sponsor Logos */}
             {event?.sponsorLogos && event.sponsorLogos.length > 0 && (
               <section className="py-4">
                 <h4 className="fw-bold mb-3">Event Sponsors</h4>
-
                 <div className="row g-3">
                   {event.sponsorLogos.map((logo, index) => (
-                    <div className="col-md-4" key={index}>
-                      <div className="shadow-sm roundedtext-center">
+                    <div className="col-md-4 text-center" key={index}>
+                      <div className="shadow-sm rounded p-2">
                         <img
-                          src={`${API}${logo}`} // 👈 FIXED — backend already includes /uploads path
+                          src={
+                            logo ||
+                            "https://via.placeholder.com/150x80?text=No+Logo"
+                          } // Cloudinary URLs
                           alt={`Sponsor ${index + 1}`}
-                          className="img-fluid   sponsor-logo"
+                          className="img-fluid sponsor-logo"
                         />
                       </div>
                     </div>

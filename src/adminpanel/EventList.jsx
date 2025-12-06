@@ -19,7 +19,9 @@ const EventList = () => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${BASE_URL}/api/events`);
+      const res = await axios.get(`${BASE_URL}/api/events`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setEvents(res.data);
     } catch (err) {
       console.error("Fetch events error:", err);
@@ -55,7 +57,6 @@ const EventList = () => {
         {/* Sidebar */}
         <nav className="col-md-2 d-none d-md-block bg-dark sidebar p-3 min-vh-100 text-white">
           <h4 className="text-center mb-4">Admin Panel</h4>
-
           <ul className="nav flex-column">
             <li className="nav-item mb-2">
               <button
@@ -65,7 +66,6 @@ const EventList = () => {
                 Dashboard
               </button>
             </li>
-
             <li className="nav-item mb-2">
               <button
                 className="btn btn-dark w-100"
@@ -74,7 +74,6 @@ const EventList = () => {
                 Create Event
               </button>
             </li>
-
             <li className="nav-item mb-2">
               <button
                 className="btn btn-dark w-100"
@@ -83,7 +82,6 @@ const EventList = () => {
                 Event List
               </button>
             </li>
-
             <li className="nav-item mt-4">
               <button
                 className="btn btn-danger w-100"
@@ -129,16 +127,11 @@ const EventList = () => {
                     <th>Actions</th>
                   </tr>
                 </thead>
-
                 <tbody>
                   {events.map((event) => {
-                    const mainImage = event.imageUrl
-                      ? `${BASE_URL}${event.imageUrl}`
-                      : null;
-
+                    const mainImage = event.imageUrl || null; // Cloudinary URL
                     return (
                       <tr key={event._id}>
-                        {/* Image */}
                         <td>
                           {mainImage ? (
                             <img
@@ -155,7 +148,6 @@ const EventList = () => {
                             "No Image"
                           )}
                         </td>
-
                         <td>{event.title}</td>
                         <td>{event.description}</td>
                         <td>{event.date}</td>
@@ -167,30 +159,40 @@ const EventList = () => {
                         <td>{event.eventTime || "N/A"}</td>
                         <td>{event.refreshments || "N/A"}</td>
 
-                        {/* Sponsor Logos */}
+                        {/* Sponsor Logos Horizontal Scroll */}
                         <td>
-                          {event.sponsorLogos?.length > 0
-                            ? event.sponsorLogos.map((logo, index) => (
+                          {event.sponsorLogos?.length > 0 ? (
+                            <div
+                              style={{
+                                display: "flex",
+                                overflowX: "auto",
+                                gap: "4px",
+                                padding: "4px 0",
+                              }}
+                            >
+                              {event.sponsorLogos.map((logo, index) => (
                                 <img
                                   key={index}
-                                  src={`${BASE_URL}${logo}`}
+                                  src={logo} // Cloudinary URL
                                   alt="Sponsor"
                                   style={{
                                     width: "40px",
                                     height: "40px",
-                                    marginRight: "4px",
                                     borderRadius: "4px",
                                     border: "1px solid #ccc",
+                                    flexShrink: 0,
                                   }}
                                 />
-                              ))
-                            : "No Sponsors"}
+                              ))}
+                            </div>
+                          ) : (
+                            "No Sponsors"
+                          )}
                         </td>
 
                         <td>
                           {new Date(event.createdAt).toLocaleDateString()}
                         </td>
-
                         <td>
                           <button
                             className="btn btn-sm btn-warning me-2"
@@ -202,7 +204,6 @@ const EventList = () => {
                           >
                             Edit
                           </button>
-
                           <button
                             className="btn btn-sm btn-danger"
                             onClick={() => handleDelete(event._id)}

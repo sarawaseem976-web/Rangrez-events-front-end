@@ -13,7 +13,7 @@ const CreateEvent = () => {
     address: "",
     standardPrice: "",
     vipPrice: "",
-    eventTime: "", // <-- UPDATED
+    eventTime: "",
     refreshments: "",
     location: "",
   });
@@ -76,7 +76,7 @@ const CreateEvent = () => {
         address: "",
         standardPrice: "",
         vipPrice: "",
-        eventTime: "", // <-- UPDATED
+        eventTime: "",
         refreshments: "",
         location: "",
       });
@@ -248,7 +248,7 @@ const CreateEvent = () => {
               <label className="form-label">Event Time</label>
               <input
                 type="text"
-                name="eventTime" // <-- UPDATED
+                name="eventTime"
                 value={form.eventTime}
                 onChange={handleChange}
                 placeholder="7:00 PM - 10:00 PM"
