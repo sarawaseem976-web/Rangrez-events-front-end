@@ -117,25 +117,23 @@ Below is your E-Ticket card. This is your entry pass.`,
     }
   };
 
-  // Build Email HTML with Base64 QR
+  // Build Email HTML with Base64 Q
+
   const buildEmailTicketHTML = async () => {
     const evTitle = event?.title || "";
     const evDate = event?.date || "";
     const evTime = event?.eventTime || "";
     const evLocation = event?.address || "";
 
-    // Generate QR as Base64
-    const qrUrl = `https://quickchart.io/qr?size=200&text=${encodeURIComponent(
-      `${API}/api/booking/verify/${booking.ticketNumber}`
-    )}`;
-
+    // Generate QR BASE64 using QRCode npm package (BEST + RELIABLE on Vercel)
     let qrBase64 = "";
     try {
-      const qrRes = await axios.get(qrUrl, { responseType: "arraybuffer" });
-      const qrBuffer = Buffer.from(qrRes.data, "binary").toString("base64");
-      qrBase64 = `data:image/png;base64,${qrBuffer}`;
+      qrBase64 = await QRCode.toDataURL(
+        `${API}/api/booking/verify/${booking.ticketNumber}`,
+        { width: 200 }
+      );
     } catch (err) {
-      console.error("QR Code generation failed:", err);
+      console.error("QR generation error:", err);
       qrBase64 = ""; // fallback
     }
 
@@ -172,16 +170,19 @@ Below is your E-Ticket card. This is your entry pass.`,
                         <p><strong>Time:</strong> ${evTime}</p>
                         <p><strong>Location:</strong> ${evLocation}</p>
                       </td>
+
                       <td style="padding:16px; width:35%; text-align:center; vertical-align:middle;">
                         <p style="margin-bottom:8px; font-size:12px; color:#666;">Scan QR to verify</p>
+
                         ${
                           qrBase64
                             ? `<img src="${qrBase64}" alt="QR Code" style="width:140px; height:140px;" />`
-                            : "not image"
+                            : "<p>No QR Generated</p>"
                         }
                       </td>
                     </tr>
                   </table>
+
                   <p style="margin-top:16px; color:#666;">
                     Please show this ticket at the entry gate. This ticket is valid for one person only.
                   </p>
@@ -193,6 +194,7 @@ Below is your E-Ticket card. This is your entry pass.`,
                   <small>Thank you for your purchase</small>
                 </td>
               </tr>
+
             </table>
           </td>
         </tr>
@@ -201,12 +203,15 @@ Below is your E-Ticket card. This is your entry pass.`,
   `;
   };
 
-  // Send Email
+  // SEND EMAIL
   const sendEmail = async () => {
     if (!booking) return alert("Booking not loaded.");
+
     try {
       setSending(true);
+
       const ticketHTML = await buildEmailTicketHTML();
+
       await axios.post(
         `${API}/api/booking/send-email/${booking._id}`,
         {
