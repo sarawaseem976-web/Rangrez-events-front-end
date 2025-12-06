@@ -177,7 +177,7 @@ Below is your E-Ticket card. This is your entry pass.`,
                         ${
                           qrBase64
                             ? `<img src="${qrBase64}" alt="QR Code" style="width:140px; height:140px;" />`
-                            : ""
+                            : "not image"
                         }
                       </td>
                     </tr>
