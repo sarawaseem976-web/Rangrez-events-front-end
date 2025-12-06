@@ -206,8 +206,7 @@ Below is your E-Ticket card. This is your entry pass.`,
     if (!booking) return alert("Booking not loaded.");
     try {
       setSending(true);
-      const ticketHTML = buildEmailTicketHTML();
-
+      const ticketHTML = await buildEmailTicketHTML();
       await axios.post(
         `${API}/api/booking/send-email/${booking._id}`,
         {
