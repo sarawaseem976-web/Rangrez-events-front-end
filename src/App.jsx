@@ -29,7 +29,7 @@ function App() {
 
         <Route path="event-details/:id" element={<EventDetails />} />
 
-        <Route path="/verify/:ticketNumber" element={<VerifyTicket />} />
+        <Route path="/verify-ticket/:ticketNumber" element={<VerifyTicket />} />
       </Routes>
     </Router>
   );
