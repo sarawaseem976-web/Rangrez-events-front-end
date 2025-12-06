@@ -119,105 +119,103 @@ Below is your E-Ticket card. This is your entry pass.`,
 
   // Build Email HTML with Base64 Q
 
-  const buildEmailTicketHTML = async () => {
-    const evTitle = event?.title || "";
-    const evDate = event?.date || "";
-    const evTime = event?.eventTime || "";
-    const evLocation = event?.address || "";
+  // const buildEmailTicketHTML = async () => {
+  //   const evTitle = event?.title || "";
+  //   const evDate = event?.date || "";
+  //   const evTime = event?.eventTime || "";
+  //   const evLocation = event?.address || "";
 
-    // Generate QR BASE64 using QRCode npm package (BEST + RELIABLE on Vercel)
-    let qrBase64 = "";
-    try {
-      qrBase64 = await QRCode.toDataURL(
-        `${API}/api/booking/verify/${booking.ticketNumber}`,
-        { width: 200 }
-      );
-    } catch (err) {
-      console.error("QR generation error:", err);
-      qrBase64 = ""; // fallback
-    }
+  //   // Generate QR BASE64 using QRCode npm package (BEST + RELIABLE on Vercel)
+  //   let qrBase64 = "";
+  //   try {
+  //     qrBase64 = await QRCode.toDataURL(
+  //       `${API}/api/booking/verify/${booking.ticketNumber}`,
+  //       { width: 200 }
+  //     );
+  //   } catch (err) {
+  //     console.error("QR generation error:", err);
+  //     qrBase64 = ""; // fallback
+  //   }
 
-    return `
-    <div style="font-family: Arial, Helvetica, sans-serif; background:#f6f6f6; padding:20px;">
-      <h3>Dear ${booking.firstName} ${booking.lastName},</h3>
-      <p>Your event ticket has been confirmed. Below is your E-Ticket card. This is your entry pass.</p>  
+  //   return `
+  //   <div style="font-family: Arial, Helvetica, sans-serif; background:#f6f6f6; padding:20px;">
+  //     <h3>Dear ${booking.firstName} ${booking.lastName},</h3>
+  //     <p>Your event ticket has been confirmed. Below is your E-Ticket card. This is your entry pass.</p>
 
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:8px; overflow:hidden;">
-              <tr>
-                <td style="background:#222831; color:#ffffff; padding:24px; text-align:center;">
-                  <h2 style="margin:0; font-size:22px;">🎟️ ${evTitle}</h2>
-                  <p style="margin:4px 0 0; opacity:0.8;">Entry Pass</p>
-                </td>
-              </tr>
+  //     <table width="100%" cellpadding="0" cellspacing="0">
+  //       <tr>
+  //         <td align="center">
+  //           <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:8px; overflow:hidden;">
+  //             <tr>
+  //               <td style="background:#222831; color:#ffffff; padding:24px; text-align:center;">
+  //                 <h2 style="margin:0; font-size:22px;">🎟️ ${evTitle}</h2>
+  //                 <p style="margin:4px 0 0; opacity:0.8;">Entry Pass</p>
+  //               </td>
+  //             </tr>
 
-              <tr>
-                <td style="padding:20px;">
-                  <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e9e9e9; border-radius:6px;">
-                    <tr>
-                      <td style="padding:16px; width:65%; vertical-align:top;">
-                        <p><strong>Ticket No:</strong> ${
-                          booking.ticketNumber
-                        }</p>
-                        <p><strong>Name:</strong> ${booking.firstName} ${
-      booking.lastName
-    }</p>
-                        <p><strong>Category:</strong> ${booking.ticketType}</p>
-                        <p><strong>City:</strong> ${booking.cityName || ""}</p>
-                        <p><strong>Date:</strong> ${evDate}</p>
-                        <p><strong>Time:</strong> ${evTime}</p>
-                        <p><strong>Location:</strong> ${evLocation}</p>
-                      </td>
+  //             <tr>
+  //               <td style="padding:20px;">
+  //                 <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e9e9e9; border-radius:6px;">
+  //                   <tr>
+  //                     <td style="padding:16px; width:65%; vertical-align:top;">
+  //                       <p><strong>Ticket No:</strong> ${
+  //                         booking.ticketNumber
+  //                       }</p>
+  //                       <p><strong>Name:</strong> ${booking.firstName} ${
+  //     booking.lastName
+  //   }</p>
+  //                       <p><strong>Category:</strong> ${booking.ticketType}</p>
+  //                       <p><strong>City:</strong> ${booking.cityName || ""}</p>
+  //                       <p><strong>Date:</strong> ${evDate}</p>
+  //                       <p><strong>Time:</strong> ${evTime}</p>
+  //                       <p><strong>Location:</strong> ${evLocation}</p>
+  //                     </td>
 
-                      <td style="padding:16px; width:35%; text-align:center; vertical-align:middle;">
-                        <p style="margin-bottom:8px; font-size:12px; color:#666;">Scan QR to verify</p>
+  //                     <td style="padding:16px; width:35%; text-align:center; vertical-align:middle;">
+  //                       <p style="margin-bottom:8px; font-size:12px; color:#666;">Scan QR to verify</p>
 
-                        ${
-                          qrBase64
-                            ? `<img src="${qrBase64}" alt="QR Code" style="width:140px; height:140px;" />`
-                            : "<p>No QR Generated</p>"
-                        }
-                      </td>
-                    </tr>
-                  </table>
+  //                       ${
+  //                         qrBase64
+  //                           ? `<img src="${qrBase64}" alt="QR Code" style="width:140px; height:140px;" />`
+  //                           : "<p>No QR Generated</p>"
+  //                       }
+  //                     </td>
+  //                   </tr>
+  //                 </table>
 
-                  <p style="margin-top:16px; color:#666;">
-                    Please show this ticket at the entry gate. This ticket is valid for one person only.
-                  </p>
-                </td>
-              </tr>
+  //                 <p style="margin-top:16px; color:#666;">
+  //                   Please show this ticket at the entry gate. This ticket is valid for one person only.
+  //                 </p>
+  //               </td>
+  //             </tr>
 
-              <tr>
-                <td style="text-align:center; background:#f7f7f7; padding:14px; color:#777;">
-                  <small>Thank you for your purchase</small>
-                </td>
-              </tr>
+  //             <tr>
+  //               <td style="text-align:center; background:#f7f7f7; padding:14px; color:#777;">
+  //                 <small>Thank you for your purchase</small>
+  //               </td>
+  //             </tr>
 
-            </table>
-          </td>
-        </tr>
-      </table>
-    </div>
-  `;
-  };
+  //           </table>
+  //         </td>
+  //       </tr>
+  //     </table>
+  //   </div>
+  // `;
+  // };
 
   // SEND EMAIL
+
   const sendEmail = async () => {
     if (!booking) return alert("Booking not loaded.");
 
     try {
       setSending(true);
 
-      const ticketHTML = await buildEmailTicketHTML();
-
       await axios.post(
         `${API}/api/booking/send-email/${booking._id}`,
         {
           subject: emailData.subject || "Your Event Ticket",
           message: emailData.message || "",
-          htmlContent: ticketHTML,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
