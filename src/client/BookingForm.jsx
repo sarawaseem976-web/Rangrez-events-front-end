@@ -100,7 +100,7 @@ const BookingForm = () => {
     <>
       <Header />
 
-      <div className="container my-4" style={{ width: "80%" }}>
+      <div className="container my-4" style={{ width: "70%" }}>
         <h2 className="my-5 text-center">Event Booking Form</h2>
 
         {message && <div className="alert alert-info">{message}</div>}
@@ -206,7 +206,7 @@ const BookingForm = () => {
                 <p className="mb-0">Bank Name: Standard Chartard</p>
                 <p className="mb-0">Acc Title: Mr. John Doe</p>
                 <p>Acc Number: 000000463874637473436</p>
-                <h5 className="text-danger">*Upload payment receipt</h5>
+                <h6 className="text-danger">*Upload payment receipt</h6>
               </div>
               <div className="">
                 <h6>Or Scan QR Code</h6>
@@ -222,7 +222,7 @@ const BookingForm = () => {
             />
           </div>
 
-          <button className="btn btn-primary w-100" disabled={loading}>
+          <button className="btn btn-primary w-100 py-3" disabled={loading}>
             {loading ? "Submitting..." : "Submit Booking"}
           </button>
         </form>
