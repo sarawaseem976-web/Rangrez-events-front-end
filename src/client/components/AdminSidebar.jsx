@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 function AdminSidebar() {
+  const navigate = useNavigate();
   return (
     <>
       <nav className="col-md-2 d-none d-md-block bg-dark sidebar p-3 min-vh-100 text-white">
