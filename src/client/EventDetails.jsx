@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import Footer from "./components/Footer";
 import axios from "axios";
 import Header from "./components/Header";
 
@@ -127,6 +128,7 @@ const EventDetails = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
