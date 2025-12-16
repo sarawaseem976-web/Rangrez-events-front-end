@@ -99,7 +99,7 @@ const BookingForm = () => {
     <>
       <Header />
 
-      <div className="container mt-4" style={{ maxWidth: "600px" }}>
+      <div className="container mt-4" style={{ width: "80%" }}>
         <h2 className="mb-3 text-center">Event Booking Form</h2>
 
         {message && <div className="alert alert-info">{message}</div>}
