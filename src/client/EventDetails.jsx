@@ -68,13 +68,22 @@ const EventDetails = () => {
                 <i class="bi bi-geo-alt"></i>
               </Link>
             </p>
-            <p>{event.location}</p>
-            <p>{event.date}</p>
-            <p>{event.time || event.eventTime}</p>
             <p>
+              <b>Date: </b>
+              {event.date}
+            </p>
+            <p>
+              <b>Time: </b>
+              {event.time || event.eventTime}
+            </p>
+            <p>
+              <b>Ticket Type: </b>
               Standard: ${event.standardPrice}, VIP: ${event.vipPrice}
             </p>
-            <p>{event.refreshments}</p>
+            <p>
+              <b>Refreshments: </b>
+              {event.refreshments}
+            </p>
             <h5>Description:</h5>
             <p>{event.description}</p>
           </div>
