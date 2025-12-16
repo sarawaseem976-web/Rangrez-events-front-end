@@ -209,7 +209,7 @@ const BookingForm = () => {
               </div>
               <div className="">
                 <h6>Or Scan QR Code</h6>
-                <img src={HelloTech} style={{ width: "60px" }} />
+                <img src={HelloTech} style={{ width: "100px" }} />
               </div>
             </div>
             <input
