@@ -197,14 +197,14 @@ const BookingForm = () => {
           {/* Receipt Upload */}
           <div className="mb-3">
             <p>
-              <h4 className="text-primary">Manual Payment</h4> (Please use our
+              <b className="text-primary">Manual Payment</b> (Please use our
               Bank Account Details for ticket booking)
             </p>
             <div className="d-flex justify-content-between">
               <div className="">
-                <p>Bank Name: Standard Chartard</p>
-                <p>Acc Title: Mr. John Doe</p>
-                <p>Acc Number: 000000463874637473436</p>
+                <p className="mb-0">Bank Name: Standard Chartard</p>
+                <p className="mb-0">Acc Title: Mr. John Doe</p>
+                <p className="mb-0">Acc Number: 000000463874637473436</p>
                 <h5 className="text-danger">*Upload payment receipt</h5>
               </div>
               <div className="">
