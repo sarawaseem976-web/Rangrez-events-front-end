@@ -204,7 +204,7 @@ const BookingForm = () => {
               <div className="">
                 <p className="mb-0">Bank Name: Standard Chartard</p>
                 <p className="mb-0">Acc Title: Mr. John Doe</p>
-                <p className="mb-0">Acc Number: 000000463874637473436</p>
+                <p>Acc Number: 000000463874637473436</p>
                 <h5 className="text-danger">*Upload payment receipt</h5>
               </div>
               <div className="">
