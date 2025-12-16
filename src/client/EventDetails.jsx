@@ -69,19 +69,19 @@ const EventDetails = () => {
               </Link>
             </p>
             <p>
-              <b>Date: </b>
+              <b className="me-2">Date: </b>
               {event.date}
             </p>
             <p>
-              <b>Time: </b>
+              <b className="me-2">Time: </b>
               {event.time || event.eventTime}
             </p>
             <p>
-              <b>Ticket Type: </b>
+              <b className="me-2">Ticket Type: </b>
               Standard: ${event.standardPrice}, VIP: ${event.vipPrice}
             </p>
             <p>
-              <b>Refreshments: </b>
+              <b className="me-2">Refreshments: </b>
               {event.refreshments}
             </p>
             <h5>Description:</h5>
