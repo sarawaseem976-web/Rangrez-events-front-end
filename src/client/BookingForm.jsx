@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "./components/Header";
 import HelloTech from "../assets/media/HelloTech.jpg";
+import Footer from "./components/Footer";
 
 const BookingForm = () => {
   const { id } = useParams(); // EVENT ID
@@ -100,7 +101,7 @@ const BookingForm = () => {
       <Header />
 
       <div className="container mt-4" style={{ width: "80%" }}>
-        <h2 className="mb-3 text-center">Event Booking Form</h2>
+        <h2 className="my-5 text-center">Event Booking Form</h2>
 
         {message && <div className="alert alert-info">{message}</div>}
 
@@ -226,6 +227,7 @@ const BookingForm = () => {
           </button>
         </form>
       </div>
+      <Footer />
     </>
   );
 };
