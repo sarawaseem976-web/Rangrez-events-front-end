@@ -58,7 +58,7 @@ const EventDetails = () => {
       <div className="container my-5">
         <div className="row">
           {/* Event Info */}
-          <div className="col-md-8">
+          <div className="col-md-7">
             <h2 className="fw-bold mb-3">{event.title}</h2>
             <h5>{event.category}</h5>
             <p>
@@ -89,7 +89,7 @@ const EventDetails = () => {
           </div>
 
           {/* Event Sidebar */}
-          <div className="col-md-4">
+          <div className="col-md-5">
             <img
               src={mainImage}
               className="img-fluid rounded shadow mb-4"
