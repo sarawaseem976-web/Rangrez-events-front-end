@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "./components/Header";
+import HelloTech from "../assets/media/HelloTech.jpg";
 
 const BookingForm = () => {
   const { id } = useParams(); // EVENT ID
@@ -101,12 +102,6 @@ const BookingForm = () => {
       <div className="container mt-4" style={{ maxWidth: "600px" }}>
         <h2 className="mb-3 text-center">Event Booking Form</h2>
 
-        {event && (
-          <p className="text-center text-muted">
-            Category: <b>{event?.category}</b>
-          </p>
-        )}
-
         {message && <div className="alert alert-info">{message}</div>}
 
         <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -201,7 +196,22 @@ const BookingForm = () => {
 
           {/* Receipt Upload */}
           <div className="mb-3">
-            <label className="form-label">Upload Receipt Image</label>
+            <p>
+              <h4 className="text-primary">Manual Payment</h4> (Please use our
+              Bank Account Details for ticket booking)
+            </p>
+            <div className="d-flex justify-content-between">
+              <div className="">
+                <p>Bank Name: Standard Chartard</p>
+                <p>Acc Title: Mr. John Doe</p>
+                <p>Acc Number: 000000463874637473436</p>
+                <h5 className="text-danger">*Upload payment receipt</h5>
+              </div>
+              <div className="">
+                <h6>Or Scan QR Code</h6>
+                <img src={HelloTech} style={{ width: "60px" }} />
+              </div>
+            </div>
             <input
               type="file"
               accept="image/*"
