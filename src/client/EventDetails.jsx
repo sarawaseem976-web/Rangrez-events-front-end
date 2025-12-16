@@ -61,7 +61,13 @@ const EventDetails = () => {
           <div className="col-md-8">
             <h2 className="fw-bold mb-3">{event.title}</h2>
             <h5>{event.category}</h5>
-            <p>{event.address}</p>
+            <p>
+              <b>Address: </b>
+              {event.address}
+              <Link to={event.location} className="ms-3">
+                <i class="bi bi-geo-alt"></i>
+              </Link>
+            </p>
             <p>{event.location}</p>
             <p>{event.date}</p>
             <p>{event.time || event.eventTime}</p>

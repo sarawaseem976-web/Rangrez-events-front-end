@@ -1,9 +1,10 @@
 .bg-image {
-  background-image: url('../media/hero-bg.jpg');
+  background-image: url('../media/banner-main-img.jpg');
   background-size: cover;
   background-position: center;
   position: relative; /* important for overlay to be positioned correctly */
   overflow: hidden;
+  height: 30rem;
 }
 
 .bg-image .overlay {
@@ -34,3 +35,112 @@
   background: #f1f1f1;
 }
 
+.custom-header {
+  background: linear-gradient(180deg, #2b1624, #120a12);
+  padding: 14px 0;
+  height: 100px;
+}
+
+.navbar {
+  padding: 0;
+}
+
+/* Logo */
+.logo {
+  width: 150px;
+}
+
+/* Absolute centered logo */
+@media (min-width: 992px) {
+  .main-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+}
+
+/* Desktop menu layout */
+@media (min-width: 992px) {
+  .desktop-menu-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 90px; /* space for logo */
+  }
+
+  .menu-left {
+    flex-direction: row;
+  }
+
+  .menu-right {
+    flex-direction: row;
+  }
+}
+
+/* Links */
+.nav-link {
+  color: #ffffff;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 24px!important;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #f0b45c;
+}
+
+/* Divider */
+.divider {
+  width: 1px;
+  height: 42px;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Burger */
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* Mobile */
+@media (max-width: 991px) {
+  .desktop-menu-wrapper {
+    display: block;
+    text-align: center;
+  }
+
+  .main-logo {
+    position: static;
+  }
+
+  .navbar-collapse {
+    background-color: #120a12;
+    margin-top: 12px;
+  }
+
+  .nav-link {
+    padding: 14px 0;
+    font-size: 15px;
+  }
+}
+.footr-bg{
+  background-image: url(../media/Footer.jpg);
+  background-position: center;
+  color: white;
+}
+.gold-text{
+  color: #ffaf02;
+}
+.gold-bg{
+  background: #ffaf02;
+}
