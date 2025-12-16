@@ -240,7 +240,7 @@ Below is your E-Ticket card. This is your entry pass.`,
   }
 
   return (
-    <div className="container mt-4">
+    <div className="">
       <div className="row">
         <AdminSidebar />
         <main className="col-md-10 ms-sm-auto px-4 py-4">
