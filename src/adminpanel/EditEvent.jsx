@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import AdminSidebar from "../client/components/AdminSidebar";
 
 const EditEvent = () => {
   const navigate = useNavigate();
@@ -121,47 +122,7 @@ const EditEvent = () => {
     <div className="container-fluid">
       <div className="row">
         {/* Sidebar */}
-        <nav className="col-md-2 d-none d-md-block bg-dark sidebar p-3 min-vh-100 text-white">
-          <h4 className="text-center mb-4">Admin Panel</h4>
-          <ul className="nav flex-column">
-            <li className="nav-item mb-2">
-              <button
-                className="btn btn-dark w-100"
-                onClick={() => navigate("/admin/dashboard")}
-              >
-                Dashboard
-              </button>
-            </li>
-            <li className="nav-item mb-2">
-              <button
-                className="btn btn-dark w-100"
-                onClick={() => navigate("/admin/create-event")}
-              >
-                Create Event
-              </button>
-            </li>
-            <li className="nav-item mb-2">
-              <button
-                className="btn btn-dark w-100"
-                onClick={() => navigate("/admin/event-list")}
-              >
-                Event List
-              </button>
-            </li>
-            <li className="nav-item mt-4">
-              <button
-                className="btn btn-danger w-100"
-                onClick={() => {
-                  localStorage.removeItem("adminToken");
-                  navigate("/admin/login");
-                }}
-              >
-                Logout
-              </button>
-            </li>
-          </ul>
-        </nav>
-
+        <AdminSidebar />
         {/* Main Content */}
         <main className="col-md-10 ms-sm-auto px-4 py-4">
           <h2>Edit Event</h2>

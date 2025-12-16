@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import html2canvas from "html2canvas";
 import QRCode from "react-qr-code";
+import AdminSidebar from "../client/components/AdminSidebar";
 
 const BookingDetails = () => {
   const { id } = useParams();
@@ -240,210 +241,82 @@ Below is your E-Ticket card. This is your entry pass.`,
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-3 text-center">Booking Details</h2>
-      {message && <div className="alert alert-info">{message}</div>}
-
       <div className="row">
-        <div className="col-md-8 shadow-sm p-5">
-          <div className="d-flex justify-content-between">
-            <div className="col-md-7">
-              <p className="mb-2">Customer Information</p>
-              <h4 className="text-primary">
-                <b>Ticket #</b> {booking.ticketNumber}
-              </h4>
-              <p>
-                <b>Name:</b> {booking.firstName} {booking.lastName}
-              </p>
-              <p>
-                <b>Contact:</b> {booking.contactNumber}
-              </p>
-              <p>
-                <b>Email:</b> {booking.emailAddress}
-              </p>
-              <p>
-                <b>City:</b> {booking.cityName}
-              </p>
-              <p>
-                <b>Ticket Type:</b> {booking.ticketType}
-              </p>
-              <p>
-                <b>Booking Date:</b>{" "}
-                {new Date(booking.createdAt).toLocaleString()}
-              </p>
+        <AdminSidebar />
+        <main className="col-md-10 ms-sm-auto px-4 py-4">
+          <h2 className="mb-3 text-center">Booking Details</h2>
+          {message && <div className="alert alert-info">{message}</div>}
 
-              <div className="mt-3">
-                <button
-                  className="btn btn-danger mt-3"
-                  onClick={() => setShowEmailModal(true)}
-                >
-                  Send Email Ticket
-                </button>
-                <button
-                  className="btn btn-success mt-3 ms-3"
-                  onClick={downloadTicket}
-                >
-                  Download Ticket PNG
-                </button>
-              </div>
-            </div>
+          <div className="row">
+            <div className="col-md-8 shadow-sm p-5">
+              <div className="d-flex justify-content-between">
+                <div className="col-md-7">
+                  <p className="mb-2">Customer Information</p>
+                  <h4 className="text-primary">
+                    <b>Ticket #</b> {booking.ticketNumber}
+                  </h4>
+                  <p>
+                    <b>Name:</b> {booking.firstName} {booking.lastName}
+                  </p>
+                  <p>
+                    <b>Contact:</b> {booking.contactNumber}
+                  </p>
+                  <p>
+                    <b>Email:</b> {booking.emailAddress}
+                  </p>
+                  <p>
+                    <b>City:</b> {booking.cityName}
+                  </p>
+                  <p>
+                    <b>Ticket Type:</b> {booking.ticketType}
+                  </p>
+                  <p>
+                    <b>Booking Date:</b>{" "}
+                    {new Date(booking.createdAt).toLocaleString()}
+                  </p>
 
-            {/* Receipt */}
-            <div className="col-md-5">
-              <h4>Receipt</h4>
-              {booking.receiptImage ? (
-                <img
-                  src={booking.receiptImage}
-                  alt="Receipt"
-                  className="img-fluid rounded mt-2"
-                />
-              ) : (
-                <p>No receipt uploaded</p>
-              )}
-            </div>
-          </div>
-
-          {/* Ticket Preview */}
-          <div className="my-5 text-center">
-            <div
-              ref={ticketRef}
-              className="ticket border rounded shadow-lg overflow-hidden bg-white"
-            >
-              <div className="bg-dark text-white text-center p-4 position-relative">
-                <h2 className="mb-1">Event Ticket</h2>
-                <p className="mb-0" style={{ opacity: 0.8 }}>
-                  Entry Pass
-                </p>
-                <span
-                  className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1"
-                  style={{ borderBottomRightRadius: "12px" }}
-                >
-                  {booking.ticketType}
-                </span>
-              </div>
-
-              <div className="p-4 bg-white">
-                <div className="row text-start">
-                  <div className="col-md-8">
-                    <h3 className="fw-bold mb-2"># {booking?.ticketNumber}</h3>
-                    <p>
-                      <b>Name:</b> {booking.firstName} {booking.lastName}
-                    </p>
-                    <p>
-                      <b>Date:</b> {event?.date}
-                    </p>
-                    <p>
-                      <b>Time:</b> {event?.eventTime}
-                    </p>
-                    <p>
-                      <b>Location:</b> {event?.address}
-                    </p>
-                    <hr />
-                    <p>
-                      <b>Ticket No:</b> {booking.ticketNumber}
-                    </p>
-                    <p>
-                      <b>Category:</b> {booking.ticketType}
-                    </p>
+                  <div className="mt-3">
+                    <button
+                      className="btn btn-danger mt-3"
+                      onClick={() => setShowEmailModal(true)}
+                    >
+                      Send Email Ticket
+                    </button>
+                    <button
+                      className="btn btn-success mt-3 ms-3"
+                      onClick={downloadTicket}
+                    >
+                      Download Ticket PNG
+                    </button>
                   </div>
+                </div>
 
-                  <div className="col-md-4 text-center">
-                    <div className="border rounded p-3">
-                      <p className="small text-muted mb-2">Scan to verify</p>
-                      <QRCode
-                        value={`${API}/api/booking/verify/${booking.ticketNumber}`}
-                        size={120}
-                        level="H"
-                        includeMargin={true}
-                      />
-                    </div>
-                  </div>
+                {/* Receipt */}
+                <div className="col-md-5">
+                  <h4>Receipt</h4>
+                  {booking.receiptImage ? (
+                    <img
+                      src={booking.receiptImage}
+                      alt="Receipt"
+                      className="img-fluid rounded mt-2"
+                    />
+                  ) : (
+                    <p>No receipt uploaded</p>
+                  )}
                 </div>
               </div>
 
-              <div className="bg-light text-center p-2 border-top">
-                <small className="text-muted">
-                  Thank you for your purchase
-                </small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Event Info */}
-        <div className="col-md-4 p-5" style={{ background: "#efefefff" }}>
-          <h4 className="mb-3">Event Information</h4>
-          {!event ? (
-            <p className="text-danger">Event details not found.</p>
-          ) : (
-            <>
-              <p>
-                <b>Event Name:</b> {event.title}
-              </p>
-              <p>
-                <b>Category:</b> {event.category}
-              </p>
-              <p>
-                <b>Standard Price:</b> ${event.standardPrice}
-              </p>
-              <p>
-                <b>VIP Price:</b> ${event.vipPrice}
-              </p>
-              <p>
-                <b>Date:</b> {event.date}
-              </p>
-              <p>
-                <b>Time:</b> {event.eventTime}
-              </p>
-              <p>
-                <b>Address:</b> {event.address}
-              </p>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Email Modal */}
-      {showEmailModal && (
-        <div
-          className="modal d-block"
-          tabIndex="-1"
-          style={{ background: "rgba(0,0,0,0.6)" }}
-        >
-          <div className="modal-dialog modal-lg">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Send Email Ticket</h5>
-                <button
-                  className="btn-close"
-                  onClick={() => setShowEmailModal(false)}
-                ></button>
-              </div>
-
-              <div className="modal-body">
-                <label className="form-label">Subject</label>
-                <input
-                  type="text"
-                  disabled
-                  className="form-control mb-3"
-                  value={emailData.subject}
-                />
-
-                <label className="form-label">Message</label>
-                <textarea
-                  className="form-control mb-4"
-                  disabled
-                  rows="4"
-                  value={emailData.message}
-                />
-
-                <h5 className="mb-3">Ticket Preview (Email Version)</h5>
+              {/* Ticket Preview */}
+              <div className="my-5 text-center">
                 <div
-                  id="email-ticket-template"
-                  className="border rounded shadow-sm p-3 bg-white"
+                  ref={ticketRef}
+                  className="ticket border rounded shadow-lg overflow-hidden bg-white"
                 >
-                  <div className="bg-dark text-white text-center p-3 position-relative">
-                    <h4 className="mb-1">{event?.title}</h4>
-                    <p style={{ opacity: 0.7 }}>Entry Pass</p>
+                  <div className="bg-dark text-white text-center p-4 position-relative">
+                    <h2 className="mb-1">Event Ticket</h2>
+                    <p className="mb-0" style={{ opacity: 0.8 }}>
+                      Entry Pass
+                    </p>
                     <span
                       className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1"
                       style={{ borderBottomRightRadius: "12px" }}
@@ -451,40 +324,50 @@ Below is your E-Ticket card. This is your entry pass.`,
                       {booking.ticketType}
                     </span>
                   </div>
-                  <div className="p-3 bg-white row justify-content-between">
-                    <div className="col-md-8">
-                      <h5>
-                        <b>Ticket No:</b> {booking.ticketNumber}
-                      </h5>
-                      <p>
-                        <b>Name:</b> {booking.firstName} {booking.lastName}
-                      </p>
-                      <p>
-                        <b>Date:</b> {event?.date}
-                      </p>
-                      <p>
-                        <b>Time:</b> {event?.eventTime}
-                      </p>
-                      <p>
-                        <b>Location:</b> {event?.address}
-                      </p>
-                      <hr />
-                      <p>
-                        <b>Category:</b> {booking.ticketType}
-                      </p>
-                    </div>
-                    <div className="col-md-4 text-center">
-                      <div className="border rounded p-3">
-                        <p className="small text-muted mb-2">Scan to verify</p>
-                        <QRCode
-                          value={`${API}/api/booking/verify/${booking.ticketNumber}`}
-                          size={120}
-                          level="H"
-                          includeMargin={true}
-                        />
+
+                  <div className="p-4 bg-white">
+                    <div className="row text-start">
+                      <div className="col-md-8">
+                        <h3 className="fw-bold mb-2">
+                          # {booking?.ticketNumber}
+                        </h3>
+                        <p>
+                          <b>Name:</b> {booking.firstName} {booking.lastName}
+                        </p>
+                        <p>
+                          <b>Date:</b> {event?.date}
+                        </p>
+                        <p>
+                          <b>Time:</b> {event?.eventTime}
+                        </p>
+                        <p>
+                          <b>Location:</b> {event?.address}
+                        </p>
+                        <hr />
+                        <p>
+                          <b>Ticket No:</b> {booking.ticketNumber}
+                        </p>
+                        <p>
+                          <b>Category:</b> {booking.ticketType}
+                        </p>
+                      </div>
+
+                      <div className="col-md-4 text-center">
+                        <div className="border rounded p-3">
+                          <p className="small text-muted mb-2">
+                            Scan to verify
+                          </p>
+                          <QRCode
+                            value={`${API}/api/booking/verify/${booking.ticketNumber}`}
+                            size={120}
+                            level="H"
+                            includeMargin={true}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
+
                   <div className="bg-light text-center p-2 border-top">
                     <small className="text-muted">
                       Thank you for your purchase
@@ -492,26 +375,155 @@ Below is your E-Ticket card. This is your entry pass.`,
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="modal-footer">
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => setShowEmailModal(false)}
-                >
-                  Close
-                </button>
-                <button
-                  className="btn btn-success"
-                  onClick={sendEmail}
-                  disabled={sending}
-                >
-                  {sending ? "Sending..." : "Send Email"}
-                </button>
-              </div>
+            {/* Event Info */}
+            <div className="col-md-4 p-5" style={{ background: "#efefefff" }}>
+              <h4 className="mb-3">Event Information</h4>
+              {!event ? (
+                <p className="text-danger">Event details not found.</p>
+              ) : (
+                <>
+                  <p>
+                    <b>Event Name:</b> {event.title}
+                  </p>
+                  <p>
+                    <b>Category:</b> {event.category}
+                  </p>
+                  <p>
+                    <b>Standard Price:</b> ${event.standardPrice}
+                  </p>
+                  <p>
+                    <b>VIP Price:</b> ${event.vipPrice}
+                  </p>
+                  <p>
+                    <b>Date:</b> {event.date}
+                  </p>
+                  <p>
+                    <b>Time:</b> {event.eventTime}
+                  </p>
+                  <p>
+                    <b>Address:</b> {event.address}
+                  </p>
+                </>
+              )}
             </div>
           </div>
-        </div>
-      )}
+
+          {/* Email Modal */}
+          {showEmailModal && (
+            <div
+              className="modal d-block"
+              tabIndex="-1"
+              style={{ background: "rgba(0,0,0,0.6)" }}
+            >
+              <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Send Email Ticket</h5>
+                    <button
+                      className="btn-close"
+                      onClick={() => setShowEmailModal(false)}
+                    ></button>
+                  </div>
+
+                  <div className="modal-body">
+                    <label className="form-label">Subject</label>
+                    <input
+                      type="text"
+                      disabled
+                      className="form-control mb-3"
+                      value={emailData.subject}
+                    />
+
+                    <label className="form-label">Message</label>
+                    <textarea
+                      className="form-control mb-4"
+                      disabled
+                      rows="4"
+                      value={emailData.message}
+                    />
+
+                    <h5 className="mb-3">Ticket Preview (Email Version)</h5>
+                    <div
+                      id="email-ticket-template"
+                      className="border rounded shadow-sm p-3 bg-white"
+                    >
+                      <div className="bg-dark text-white text-center p-3 position-relative">
+                        <h4 className="mb-1">{event?.title}</h4>
+                        <p style={{ opacity: 0.7 }}>Entry Pass</p>
+                        <span
+                          className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1"
+                          style={{ borderBottomRightRadius: "12px" }}
+                        >
+                          {booking.ticketType}
+                        </span>
+                      </div>
+                      <div className="p-3 bg-white row justify-content-between">
+                        <div className="col-md-8">
+                          <h5>
+                            <b>Ticket No:</b> {booking.ticketNumber}
+                          </h5>
+                          <p>
+                            <b>Name:</b> {booking.firstName} {booking.lastName}
+                          </p>
+                          <p>
+                            <b>Date:</b> {event?.date}
+                          </p>
+                          <p>
+                            <b>Time:</b> {event?.eventTime}
+                          </p>
+                          <p>
+                            <b>Location:</b> {event?.address}
+                          </p>
+                          <hr />
+                          <p>
+                            <b>Category:</b> {booking.ticketType}
+                          </p>
+                        </div>
+                        <div className="col-md-4 text-center">
+                          <div className="border rounded p-3">
+                            <p className="small text-muted mb-2">
+                              Scan to verify
+                            </p>
+                            <QRCode
+                              value={`${API}/api/booking/verify/${booking.ticketNumber}`}
+                              size={120}
+                              level="H"
+                              includeMargin={true}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-light text-center p-2 border-top">
+                        <small className="text-muted">
+                          Thank you for your purchase
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="modal-footer">
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => setShowEmailModal(false)}
+                    >
+                      Close
+                    </button>
+                    <button
+                      className="btn btn-success"
+                      onClick={sendEmail}
+                      disabled={sending}
+                    >
+                      {sending ? "Sending..." : "Send Email"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 };

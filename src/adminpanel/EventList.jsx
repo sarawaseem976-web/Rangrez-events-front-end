@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AdminSidebar from "../client/components/AdminSidebar";
 
 const EventList = () => {
   const navigate = useNavigate();
@@ -55,47 +56,8 @@ const EventList = () => {
     <div className="container-fluid">
       <div className="row">
         {/* Sidebar */}
-        <nav className="col-md-2 d-none d-md-block bg-dark sidebar p-3 min-vh-100 text-white">
-          <h4 className="text-center mb-4">Admin Panel</h4>
-          <ul className="nav flex-column">
-            <li className="nav-item mb-2">
-              <button
-                className="btn btn-dark w-100"
-                onClick={() => navigate("/admin/dashboard")}
-              >
-                Dashboard
-              </button>
-            </li>
-            <li className="nav-item mb-2">
-              <button
-                className="btn btn-dark w-100"
-                onClick={() => navigate("/admin/create-event")}
-              >
-                Create Event
-              </button>
-            </li>
-            <li className="nav-item mb-2">
-              <button
-                className="btn btn-dark w-100"
-                onClick={() => navigate("/admin/event-list")}
-              >
-                Event List
-              </button>
-            </li>
-            <li className="nav-item mt-4">
-              <button
-                className="btn btn-danger w-100"
-                onClick={() => {
-                  localStorage.removeItem("adminToken");
-                  navigate("/admin/login");
-                }}
-              >
-                Logout
-              </button>
-            </li>
-          </ul>
-        </nav>
 
+        <AdminSidebar />
         {/* Main Content */}
         <main className="col-md-10 ms-sm-auto px-4 py-4">
           <h2>All Events</h2>
@@ -113,7 +75,6 @@ const EventList = () => {
                   <tr>
                     <th>Image</th>
                     <th>Title</th>
-                    <th>Description</th>
                     <th>Date</th>
                     <th>Category</th>
                     <th>Address</th>
@@ -149,7 +110,6 @@ const EventList = () => {
                           )}
                         </td>
                         <td>{event.title}</td>
-                        <td>{event.description}</td>
                         <td>{event.date}</td>
                         <td>{event.category}</td>
                         <td>{event.address}</td>

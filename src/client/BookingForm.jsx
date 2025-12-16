@@ -50,7 +50,9 @@ const BookingForm = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      setMessage("Booking submitted successfully!");
+      setMessage(
+        "Booking submitted successfully! Once payments verified, you will receive a confirmation email."
+      );
 
       // Reset Form
       setFormData({
