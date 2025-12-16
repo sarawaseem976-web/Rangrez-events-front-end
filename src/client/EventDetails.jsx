@@ -84,12 +84,12 @@ const EventDetails = () => {
               <b className="me-2">Refreshments: </b>
               {event.refreshments}
             </p>
-            <h5>Description:</h5>
+            <h3>Description:</h3>
             <p>{event.description}</p>
           </div>
 
           {/* Event Sidebar */}
-          <div className="col-md-5">
+          <div className="col-md-5 ps-3">
             <img
               src={mainImage}
               className="img-fluid rounded shadow mb-4"
